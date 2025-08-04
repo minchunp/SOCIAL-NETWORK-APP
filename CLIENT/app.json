@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "CLIENT",
-    "slug": "CLIENT",
+    "name": "Social Network App",
+    "slug": "Social Network App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
