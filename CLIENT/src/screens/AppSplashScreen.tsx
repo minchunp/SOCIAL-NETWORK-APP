@@ -1,16 +1,20 @@
 import { globalColors } from '@/constants/global/COLORS';
-import { BlurView } from 'expo-blur';
-import { Dimensions, StyleSheet, Text, View } from 'react-native';
-
-const height = Dimensions.get('window').height;
+import { StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { heightScreen } from '@/constants/global/constant';
 
 const AppSplashScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerTitle}>
-        <BlurView style={styles.bgTitle} intensity={500} tint="dark">
+        <LinearGradient
+          colors={['#404040', '#202020', '#000000']}
+          style={styles.bgTitle}
+          start={{ x: 0.5, y: 0.5 }}
+          end={{ x: 1, y: 1 }}
+        >
           <Text style={styles.title}>INJOY</Text>
-        </BlurView>
+        </LinearGradient>
       </View>
 
       <View style={styles.containerSubtitle}>
@@ -29,24 +33,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   containerTitle: {
-    marginTop: height * 0.28,
+    alignItems: 'center',
+    marginTop: heightScreen * 0.25,
   },
   bgTitle: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 200,
-    height: 200,
-    borderRadius: 99,
-    overflow: 'hidden',
+    width: 230,
+    height: 230,
+    borderRadius: 200,
   },
   title: {
     fontSize: 45,
     fontWeight: 'bold',
     color: globalColors.white,
+    letterSpacing: 8,
   },
   containerSubtitle: {
     alignItems: 'center',
-    marginTop: height * 0.28,
+    marginTop: heightScreen * 0.25,
   },
   lineSubtitle: {
     width: 80,
