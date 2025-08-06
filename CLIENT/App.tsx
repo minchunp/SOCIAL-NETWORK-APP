@@ -1,20 +1,35 @@
+import MainNavigation from '@/navigation';
+import { store } from '@/store';
+import { NavigationContainer } from '@react-navigation/native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Provider } from 'react-redux';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+const STALE_TIME = 5 * 60 * 1000;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      staleTime: STALE_TIME,
+    },
   },
 });
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <StatusBar style="dark" translucent backgroundColor="transparent" />
+          <NavigationContainer>
+            <MainNavigation />
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </QueryClientProvider>
+    </Provider>
+  );
+};
+
+export default App;
