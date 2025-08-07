@@ -1,5 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { FlatList, StyleSheet, Dimensions, Animated, View } from 'react-native';
+import { StyleSheet, Dimensions, View } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  interpolate,
+  Extrapolate,
+  runOnJS,
+  withSpring,
+  withTiming,
+} from 'react-native-reanimated';
 import OnBoardingScreenOne from './OnBoardingScreenOne';
 import OnBoardingScreenTwo from './OnBoardingScreenTwo';
 import OnBoardingScreenThree from './OnBoardingScreenThree';
@@ -15,7 +25,7 @@ interface OnBoardingMainScreenProps {
 const OnBoardingMainScreen: React.FC<OnBoardingMainScreenProps> = ({
   navigation,
 }) => {
-  const scrollX = useRef(new Animated.Value(0)).current;
+  const scrollX = useSharedValue(0);
   const flatListRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -25,35 +35,78 @@ const OnBoardingMainScreen: React.FC<OnBoardingMainScreenProps> = ({
     { id: '3', component: OnBoardingScreenThree },
   ];
 
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
+  const updateCurrentIndex = (offsetX: number) => {
+    const index = Math.round(offsetX / screenWidth);
+    setCurrentIndex(index);
+  };
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: event => {
+      scrollX.value = event.contentOffset.x;
+      runOnJS(updateCurrentIndex)(event.contentOffset.x);
+    },
+  });
+
+  // Create a separate component for animated items
+  const AnimatedItem = ({ item, index }: { item: any; index: number }) => {
     const Component = item.component;
+
+    const animatedStyle = useAnimatedStyle(() => {
+      const inputRange = [
+        (index - 1) * screenWidth,
+        index * screenWidth,
+        (index + 1) * screenWidth,
+      ];
+
+      // Parallax effect
+      const translateX = interpolate(
+        scrollX.value,
+        inputRange,
+        [-screenWidth * 0.1, 0, screenWidth * 0.1],
+        Extrapolate.CLAMP
+      );
+
+      // Fade effect
+      const opacity = interpolate(
+        scrollX.value,
+        inputRange,
+        [0.7, 1, 0.7],
+        Extrapolate.CLAMP
+      );
+
+      // Scale effect
+      const scale = interpolate(
+        scrollX.value,
+        inputRange,
+        [0.95, 1, 0.95],
+        Extrapolate.CLAMP
+      );
+
+      return {
+        transform: [{ translateX }, { scale }],
+        opacity,
+      };
+    });
+
     return (
-      <View style={{ width: screenWidth }}>
+      <Animated.View style={[{ width: screenWidth }, animatedStyle]}>
         <Component
           navigation={navigation}
           currentIndex={index}
           scrollX={scrollX}
           screenWidth={screenWidth}
         />
-      </View>
+      </Animated.View>
     );
   };
 
-  const onScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { x: scrollX } } }],
-    {
-      useNativeDriver: false,
-      listener: (event: any) => {
-        const offsetX = event.nativeEvent.contentOffset.x;
-        const index = Math.round(offsetX / screenWidth);
-        setCurrentIndex(index);
-      },
-    }
-  );
+  const renderItem = ({ item, index }: { item: any; index: number }) => {
+    return <AnimatedItem item={item} index={index} />;
+  };
 
   return (
     <View style={styles.container}>
-      <FlatList
+      <Animated.FlatList
         ref={flatListRef}
         data={onBoardingData}
         renderItem={renderItem}
@@ -61,8 +114,9 @@ const OnBoardingMainScreen: React.FC<OnBoardingMainScreenProps> = ({
         pagingEnabled
         showsHorizontalScrollIndicator={false}
         keyExtractor={item => item.id}
-        onScroll={onScroll}
+        onScroll={scrollHandler}
         scrollEventThrottle={16}
+        decelerationRate="fast"
         style={styles.flatList}
       />
       <PaginationDots

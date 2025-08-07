@@ -1,6 +1,6 @@
 export const globalColors = {
-  primary: '#007AFF',
-  backgroundColor: '#000000',
+  primary: '#6366F1',
+  backgroundColor: '#121212',
   white: '#FFFFFF',
   gray: '#B3B2B2',
 };
