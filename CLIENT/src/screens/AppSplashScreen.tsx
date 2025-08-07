@@ -1,20 +1,29 @@
 import { globalColors } from '@/constants/global/COLORS';
-import { StyleSheet, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { heightScreen } from '@/constants/global/constant';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
+import Svg, { Defs, RadialGradient, Stop, Circle } from 'react-native-svg';
 
 const AppSplashScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.containerTitle}>
-        <LinearGradient
-          colors={['#404040', '#202020', '#000000']}
-          style={styles.bgTitle}
-          start={{ x: 0.5, y: 0.5 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <Text style={styles.title}>INJOY</Text>
-        </LinearGradient>
+        <View style={styles.svgContainer}>
+          <Svg height="300" width="300" style={styles.svgBackground}>
+            <Defs>
+              <RadialGradient id="grad" cx="50%" cy="50%" r="50%">
+                <Stop offset="0%" stopColor="#606060" stopOpacity="1" />
+                <Stop offset="30%" stopColor="#404040" stopOpacity="1" />
+                <Stop offset="60%" stopColor="#202020" stopOpacity="1" />
+                <Stop offset="85%" stopColor="#101010" stopOpacity="1" />
+                <Stop offset="100%" stopColor="#000000" stopOpacity="1" />
+              </RadialGradient>
+            </Defs>
+            <Circle cx="150" cy="150" r="150" fill="url(#grad)" />
+          </Svg>
+          <View style={styles.textContainer}>
+            <Text style={styles.title}>INJOY</Text>
+          </View>
+        </View>
       </View>
 
       <View style={styles.containerSubtitle}>
@@ -29,29 +38,36 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: globalColors.backgroundColor,
+    backgroundColor: '#000000',
     alignItems: 'center',
   },
   containerTitle: {
     alignItems: 'center',
-    marginTop: heightScreen * 0.25,
+    marginTop: heightScreen * 0.24,
   },
-  bgTitle: {
+  svgContainer: {
+    position: 'relative',
     justifyContent: 'center',
     alignItems: 'center',
-    width: 230,
-    height: 230,
-    borderRadius: 200,
+  },
+  svgBackground: {
+    position: 'absolute',
+  },
+  textContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 300,
+    height: 300,
   },
   title: {
-    fontSize: 45,
+    fontSize: 40,
     fontWeight: 'bold',
     color: globalColors.white,
     letterSpacing: 8,
   },
   containerSubtitle: {
     alignItems: 'center',
-    marginTop: heightScreen * 0.25,
+    marginTop: heightScreen * 0.24,
   },
   lineSubtitle: {
     width: 80,
@@ -63,7 +79,7 @@ const styles = StyleSheet.create({
   subtitle: {
     letterSpacing: 1.5,
     color: globalColors.gray,
-    fontSize: 18,
+    fontSize: 15,
   },
 });
 

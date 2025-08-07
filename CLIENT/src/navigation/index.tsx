@@ -13,7 +13,7 @@ const MainNavigation = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setIsShowAppSplashScreen(true);
+      setIsShowAppSplashScreen(false);
     }, SECONDS_TO_SHOW_SPLASH_SCREEN);
 
     return () => clearTimeout(timer);
