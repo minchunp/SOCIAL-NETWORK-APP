@@ -1,5 +1,5 @@
 import { globalColors } from '@/constants/global/COLORS';
-import { globalStyles } from '@/constants/global/constant';
+import { globalStyles, heightScreen } from '@/constants/global/constant';
 import { AuthNavigatorPaths } from '@/constants/paths/navigator.path';
 import { NavigationProp } from '@react-navigation/native';
 import React from 'react';
@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.backgroundColor,
   },
   containerIcon: {
+    marginTop: heightScreen * -0.05,
     marginBottom: 25,
     justifyContent: 'center',
     alignItems: 'center',
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   },
   btnText: {
     color: globalColors.white,
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: 'bold',
   },
 });

@@ -1,5 +1,5 @@
 import { globalColors } from '@/constants/global/COLORS';
-import { globalStyles } from '@/constants/global/constant';
+import { globalStyles, heightScreen } from '@/constants/global/constant';
 import { Image, StyleSheet } from 'react-native';
 import { Text, View } from 'react-native';
 
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     backgroundColor: globalColors.backgroundColor,
   },
   containerIcon: {
+    marginTop: heightScreen * -0.05,
     marginBottom: 25,
     justifyContent: 'center',
     alignItems: 'center',

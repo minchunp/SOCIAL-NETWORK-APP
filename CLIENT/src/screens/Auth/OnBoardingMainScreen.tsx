@@ -3,12 +3,7 @@ import { StyleSheet, Dimensions, View } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
-  useAnimatedStyle,
-  interpolate,
-  Extrapolate,
   runOnJS,
-  withSpring,
-  withTiming,
 } from 'react-native-reanimated';
 import OnBoardingScreenOne from './OnBoardingScreenOne';
 import OnBoardingScreenTwo from './OnBoardingScreenTwo';
@@ -47,61 +42,18 @@ const OnBoardingMainScreen: React.FC<OnBoardingMainScreenProps> = ({
     },
   });
 
-  // Create a separate component for animated items
-  const AnimatedItem = ({ item, index }: { item: any; index: number }) => {
+  const renderItem = ({ item, index }: { item: any; index: number }) => {
     const Component = item.component;
-
-    const animatedStyle = useAnimatedStyle(() => {
-      const inputRange = [
-        (index - 1) * screenWidth,
-        index * screenWidth,
-        (index + 1) * screenWidth,
-      ];
-
-      // Parallax effect
-      const translateX = interpolate(
-        scrollX.value,
-        inputRange,
-        [-screenWidth * 0.1, 0, screenWidth * 0.1],
-        Extrapolate.CLAMP
-      );
-
-      // Fade effect
-      const opacity = interpolate(
-        scrollX.value,
-        inputRange,
-        [0.7, 1, 0.7],
-        Extrapolate.CLAMP
-      );
-
-      // Scale effect
-      const scale = interpolate(
-        scrollX.value,
-        inputRange,
-        [0.95, 1, 0.95],
-        Extrapolate.CLAMP
-      );
-
-      return {
-        transform: [{ translateX }, { scale }],
-        opacity,
-      };
-    });
-
     return (
-      <Animated.View style={[{ width: screenWidth }, animatedStyle]}>
+      <View style={{ width: screenWidth }}>
         <Component
           navigation={navigation}
           currentIndex={index}
           scrollX={scrollX}
           screenWidth={screenWidth}
         />
-      </Animated.View>
+      </View>
     );
-  };
-
-  const renderItem = ({ item, index }: { item: any; index: number }) => {
-    return <AnimatedItem item={item} index={index} />;
   };
 
   return (
@@ -116,7 +68,6 @@ const OnBoardingMainScreen: React.FC<OnBoardingMainScreenProps> = ({
         keyExtractor={item => item.id}
         onScroll={scrollHandler}
         scrollEventThrottle={16}
-        decelerationRate="fast"
         style={styles.flatList}
       />
       <PaginationDots

@@ -5,8 +5,6 @@ import Animated, {
   interpolate,
   Extrapolate,
   SharedValue,
-  withSpring,
-  withTiming,
 } from 'react-native-reanimated';
 import { globalColors } from '@/constants/global/COLORS';
 
@@ -38,32 +36,21 @@ const PaginationDots = (props: PaginationDotsProps) => {
       const scale = interpolate(
         scrollX.value,
         inputRange,
-        [0.6, 1.4, 0.6],
+        [0.8, 1.3, 0.8],
         Extrapolate.CLAMP
       );
 
       const width = interpolate(
         scrollX.value,
         inputRange,
-        [8, 35, 8],
-        Extrapolate.CLAMP
-      );
-
-      // Add rotation effect
-      const rotation = interpolate(
-        scrollX.value,
-        inputRange,
-        [-10, 0, 10],
+        [30, 40, 30],
         Extrapolate.CLAMP
       );
 
       return {
-        opacity: withTiming(opacity, { duration: 300 }),
-        transform: [
-          { scale: withSpring(scale, { damping: 12, stiffness: 120 }) },
-          { rotate: `${withSpring(rotation, { damping: 10 })}deg` },
-        ],
-        width: withSpring(width, { damping: 15, stiffness: 100 }),
+        opacity,
+        transform: [{ scale }],
+        width,
         backgroundColor:
           index === currentIndex ? globalColors.primary : globalColors.gray,
       };
@@ -93,17 +80,9 @@ const styles = StyleSheet.create({
   },
   dot: {
     height: 8,
-    borderRadius: 6,
-    marginHorizontal: 6,
+    borderRadius: 4,
+    marginHorizontal: 4,
     backgroundColor: globalColors.gray,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
 });
 
