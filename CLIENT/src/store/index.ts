@@ -22,6 +22,7 @@ const persistConfig = {
   version: 1,
   storage: AsyncStorage,
   whitelist: ['auth'],
+  blackList: [],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

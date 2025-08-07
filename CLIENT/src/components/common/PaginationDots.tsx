@@ -3,8 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import Animated, {
   useAnimatedStyle,
   interpolate,
-  Extrapolate,
   SharedValue,
+  Extrapolation,
 } from 'react-native-reanimated';
 import { globalColors } from '@/constants/global/COLORS';
 
@@ -30,21 +30,21 @@ const PaginationDots = (props: PaginationDotsProps) => {
         scrollX.value,
         inputRange,
         [0.3, 1, 0.3],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP
       );
 
       const scale = interpolate(
         scrollX.value,
         inputRange,
         [0.8, 1.3, 0.8],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP
       );
 
       const width = interpolate(
         scrollX.value,
         inputRange,
         [30, 40, 30],
-        Extrapolate.CLAMP
+        Extrapolation.CLAMP
       );
 
       return {
