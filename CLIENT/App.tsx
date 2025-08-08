@@ -1,4 +1,4 @@
-import Loading from '@/components/common/Loading';
+import LoadingModal from '@/modals/Loading';
 import MainNavigation from '@/navigation';
 import { persistor, store } from '@/store';
 import { NavigationContainer } from '@react-navigation/native';
@@ -22,7 +22,10 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={<Loading />} persistor={persistor}>
+      <PersistGate
+        loading={<LoadingModal visible={true} />}
+        persistor={persistor}
+      >
         <QueryClientProvider client={queryClient}>
           <SafeAreaProvider>
             <StatusBar

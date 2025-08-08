@@ -5,6 +5,6 @@ export const widthScreen = Dimensions.get('window').width;
 
 export const globalStyles = {
   mainPaddingHorizontal: {
-    paddingHorizontal: 22,
+    paddingHorizontal: 24,
   },
 };

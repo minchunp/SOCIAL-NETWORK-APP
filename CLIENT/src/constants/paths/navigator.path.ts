@@ -1,6 +1,6 @@
 export const AuthNavigatorPaths = {
   LOGIN: 'LoginScreen',
-  REGISTER: 'RegisterScreen',
+  SIGN_UP: 'RegisterScreen',
   ONBOARDING_MAIN_SCREEN: 'OnBoardingMainScreen',
 };
 
